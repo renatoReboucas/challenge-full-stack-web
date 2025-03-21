@@ -6,7 +6,7 @@ import {
 } from 'fastify-type-provider-zod'
 import 'dotenv/config'
 import cors from '@fastify/cors'
-import { PokemonRoutes } from '../Routes/Pokemon'
+import { StudentRoutes } from '../Routes/Student'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 app.setValidatorCompiler(validatorCompiler)
@@ -21,7 +21,7 @@ app.get('/ping', async () => {
   return { ping: 'pong' }
 })
 
-app.register(PokemonRoutes, { prefix: 'api/pokemons' })
+app.register(StudentRoutes, { prefix: 'api/student' })
 
 app
   .listen({
