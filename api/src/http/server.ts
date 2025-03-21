@@ -17,7 +17,7 @@ app.register(cors, {
 })
 
 app.get('/ping', async () => {
-  console.log("Ping route accessed");
+  console.log('Ping route accessed')
   return { ping: 'pong' }
 })
 
