@@ -17,7 +17,6 @@ app.register(cors, {
 })
 
 app.get('/ping', async () => {
-  console.log('Ping route accessed')
   return { ping: 'pong' }
 })
 
@@ -29,5 +28,5 @@ app
     host: '0.0.0.0',
   })
   .then(() => {
-    console.log(`🚀 Server is running on port ${process.env.PORT || 3333}`)
+    console.info(`🚀 Server is running on port ${process.env.PORT || 3333}`)
   })

@@ -84,7 +84,8 @@
 				"useAwait": "off",
 				"noExplicitAny": "off",
 				"noArrayIndexKey": "off",
-				"noDebugger": "off"
+				"noDebugger": "off",
+				"noImplicitAnyLet": "off"
 			}
 		}
 	},
