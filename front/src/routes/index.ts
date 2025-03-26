@@ -1,11 +1,16 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
 import StudentsView from '../views/StudentsView.vue'
-import CreateStudentView from '../views/CreateStudentView.vue'
+import FormStudentView from '../views/FormStudentView.vue'
 
 const routes = [
   { path: '/', name: 'students', component: StudentsView },
-  { path: '/cadastro-alunos', name: 'cadastro', component: CreateStudentView },
+  {
+    path: '/editar-aluno/:id',
+    name: 'form',
+    component: FormStudentView,
+    props: true,
+  },
 ]
 
 const router = createRouter({

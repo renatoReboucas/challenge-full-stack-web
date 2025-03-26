@@ -26,76 +26,70 @@
       :loading="loading"
     >
       <template v-slot:item.actions="{ item }">
-        <v-icon size="small" class="me-2" @click="editItem(item.raw)">
+        <v-icon size="small" class="me-2" @click="editItem(item.id)">
           mdi-pencil
         </v-icon>
-        <v-icon size="small" @click="deleteItem(item.raw)"> mdi-delete </v-icon>
+        <v-icon size="small" @click="deleteItem(item.id)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { api } from "@/lib/api";
+import type { Student } from "@/types/student"
 
-interface Student {
-  id: number;
-  registration: string;
-  name: string;
-  cpf: string;
-}
+const router = useRouter();
 
 const search = ref("");
 const loading = ref(false);
 
 const headers = [
-  { title: "Registro Acadêmico", align: "start", key: "registration" },
-  { title: "Nome", key: "name" },
+  { title: "Registro Acadêmico", align: "start", key: "ra" },
+  { title: "Nome", key: "nome" },
   { title: "CPF", key: "cpf" },
   { title: "Ações", key: "actions", sortable: false },
 ];
 
-const students = ref<Student[]>([
-  {
-    id: 1,
-    registration: "101235",
-    name: "Paula Souza",
-    cpf: "121.999.999-99",
-  },
-  {
-    id: 2,
-    registration: "111687",
-    name: "João Silva",
-    cpf: "122.999.999-99",
-  },
-  {
-    id: 3,
-    registration: "111365",
-    name: "Marina Miranda",
-    cpf: "123.999.999-99",
-  },
-  {
-    id: 4,
-    registration: "101299",
-    name: "Mauricio Souza",
-    cpf: "124.999.999-99",
-  },
-]);
-
-const router = useRouter();
+const students = ref<Student[]>([]);
+const fetchStudents = async () => {
+  try {
+    loading.value = true;
+    const response = await api.get('/students')
+    if(response.status !== 200) {
+      throw new Error("Erro ao buscar alunos");
+    }
+    students.value = response.data as Student[]
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    // You might want to handle the error appropriately
+  } finally {
+    loading.value = false;
+  }
+};
+onMounted(() => {
+  fetchStudents();
+});
 
 const handleAddNew = () => {
-  router.push("/cadastrar-aluno");
+  router.push("/cadastro-alunos");
 };
 
-const editItem = (item: Student) => {
-  // Implement edit logic
-  console.log("Edit item:", item);
+const editItem = (id:Student['id']) => {
+  router.push({ name: 'form', params: { id } });
 };
 
-const deleteItem = (item: Student) => {
-  // Implement delete logic
-  console.log("Delete item:", item);
+const deleteItem = async (id: Student['id']) => {
+ try {
+  const response = await api.delete(`/students/${id}`);
+  if(response.status === 204) {
+    fetchStudents();
+  }
+ } catch (err) {
+  console.error('Error deleting student:', err);
+ }
+
 };
 </script>

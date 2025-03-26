@@ -11,6 +11,22 @@ export async function StudentRoutes(app: FastifyInstance) {
       return reply.status(500).send({ error: 'Erro interno do servidor' })
     }
   })
+  app.get(
+    '/students/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { id } = request.params as { id: string }
+        const student = await prisma.student.findFirst({
+          where: {
+            id,
+          },
+        })
+        return student
+      } catch (err) {
+        return reply.status(500).send({ error: 'Erro interno do servidor' })
+      }
+    }
+  )
 
   app.post(
     '/students',

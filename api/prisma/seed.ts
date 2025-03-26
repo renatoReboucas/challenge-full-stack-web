@@ -3,23 +3,24 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
+  await prisma.student.deleteMany()
   await prisma.student.createMany({
     data: [
       {
         ra: 1001,
-        cpf: '12345678901',
+        cpf: '999999999999',
         nome: 'João Silva',
         email: 'joao@example.com',
       },
       {
         ra: 1002,
-        cpf: '23456789012',
+        cpf: '999999999999',
         nome: 'Maria Santos',
         email: 'maria@example.com',
       },
       {
         ra: 1003,
-        cpf: '34567890123',
+        cpf: '999999999999',
         nome: 'Pedro Oliveira',
         email: 'pedro@example.com',
       },
@@ -30,7 +31,7 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error(e)
     process.exit(1)
   })
